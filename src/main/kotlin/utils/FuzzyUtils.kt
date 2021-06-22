@@ -1,7 +1,5 @@
 package utils
 
-import model.SearchResult
-import java.awt.image.ImageObserver
 import kotlin.math.abs
 
 fun String.getPatternAlphabet(): Map<Char, Int> {
@@ -14,17 +12,16 @@ fun String.getPatternAlphabet(): Map<Char, Int> {
 }
 
 inline fun <T, K> List<T>.distinctWithCallback(selector: (T) -> K, observer: (t1: T, t2: T) -> Unit): List<T> {
-    val set = HashSet<K>()
-    val list = ArrayList<T>()
+    val map = HashMap<K, T>()
     for (e in this) {
         val key = selector(e)
-        if (set.add(key)) {
-            list.add(e)
+        if (map.containsKey(key)) {
+            observer.invoke(map[key]!!, e)
         } else {
-            observer.invoke(list[list.indexOf(e)], e)
+            map[key] = e
         }
     }
-    return list
+    return map.values.toList()
 }
 
 object FuzzyUtils {
