@@ -2,6 +2,7 @@ import bitap.Bitap
 import model.Index
 import model.SearchResult
 import utils.distinctWithCallback
+import kotlin.math.pow
 
 class Fuzzy<T>(
     private val list: List<T>,
@@ -48,7 +49,7 @@ class Fuzzy<T>(
                 results.add(
                     SearchResult(
                         item = list[it.idx],
-                        score = score * it.weight
+                        score = score.pow(it.weight)
                     )
                 )
             }
