@@ -20,12 +20,12 @@ class Fuzzy<T>(
         }
     }
 
-    fun search(query: String, limit: Int = -1): List<T> {
+    fun search(query: String, limit: Int = -1): List<SearchResult<T>> {
 
         var results = searchStringList(query)
             .distinctWithCallback(
                 { it.item },
-                { old, new -> old.score += new.score }
+                { old, new -> old.score *= new.score }
             )
 
         if (options.shouldSort)
@@ -34,7 +34,7 @@ class Fuzzy<T>(
         if (limit > -1)
             results = results.slice(0..limit)
 
-        return results.map { it.item }
+        return results
     }
 
     private fun searchStringList(query: String): List<SearchResult<T>> {
